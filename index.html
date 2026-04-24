@@ -40,12 +40,21 @@
                 </div>
                 <h1 class="font-bold text-lg tracking-tight">Dua Dimensi</h1>
             </div>
-            <button id="theme-toggle" class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors flex items-center justify-center text-gray-500 dark:text-gray-400">
+            <button id="theme-toggle" class="w-10 h-10 rounded-full hover:bg-gray-100 dark:bg-gray-800 transition-colors flex items-center justify-center text-gray-500 dark:text-gray-400">
                 <i class="fa-solid fa-moon text-xl" id="theme-icon"></i>
             </button>
         </header>
 
-        <main class="flex-1 w-full px-6 py-8 flex flex-col gap-4" id="links-container">
+        <div class="px-6 pt-6 w-full">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input type="text" id="search-input" class="bg-gray-100 dark:bg-gray-800/80 border-0 text-gray-900 dark:text-white text-sm rounded-xl focus:ring-2 focus:ring-primary block w-full pl-11 p-3.5 transition-all shadow-inner" placeholder="Cari layanan, jadwal, atau cabang...">
+            </div>
+        </div>
+
+        <main class="flex-1 w-full px-6 py-6 flex flex-col gap-4" id="links-container">
             <div class="text-center py-10 text-gray-500 animate-pulse">
                 <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-primary"></i>
                 <p>Memuat layanan...</p>
@@ -71,7 +80,6 @@
         const themeIcon = document.getElementById('theme-icon');
         const themeToggleBtn = document.getElementById('theme-toggle');
         
-        // Cek Local Storage untuk Theme preference
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             htmlElement.classList.add('dark');
             themeIcon.classList.replace('fa-moon', 'fa-sun');
@@ -91,15 +99,17 @@
         });
 
         // --- FETCH AND RENDER DATA LOGIC ---
-        // GANTI STRING DI BAWAH DENGAN URL WEB APP GAS ANDA
         const API_URL = 'https://script.google.com/macros/s/AKfycbwgU7pDsCNortvS-gbeyir87gj08ZY0Z_jB72Jt3pQOa8yL-WDqH4N3dq4gn93lxN_i/exec';
         const container = document.getElementById('links-container');
+        const searchInput = document.getElementById('search-input');
+        
+        let allLinksData = []; // Variabel untuk menyimpan master data
 
         async function fetchLinks() {
             try {
                 const response = await fetch(API_URL);
-                const data = await response.json();
-                renderLinks(data);
+                allLinksData = await response.json(); // Simpan data ke variabel global
+                renderLinks(allLinksData); // Render tampilan awal
             } catch (error) {
                 container.innerHTML = `
                     <div class="text-center py-10 text-red-500 bg-red-50 dark:bg-red-900/20 rounded-xl">
@@ -113,16 +123,65 @@
             return str.replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
         }
 
-        function renderLinks(data) {
-            container.innerHTML = ''; // Clear loading
+        // --- LOGIKA PENCARIAN (SEARCH LOGIC) ---
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
             
-            // Filter Parent dan Anak
+            // Jika pencarian kosong, kembalikan ke tampilan folder normal
+            if (query === '') {
+                renderLinks(allLinksData);
+                return;
+            }
+
+            // Filter data: Cari judul yang cocok DAN pastikan itu adalah 'Link' (bukan Folder)
+            const filteredData = allLinksData.filter(item => 
+                item.Judul.toLowerCase().includes(query) && item.Tipe.toLowerCase() !== 'folder'
+            );
+
+            renderSearchResults(filteredData);
+        });
+
+        // --- FUNGSI RENDER HASIL PENCARIAN ---
+        function renderSearchResults(data) {
+            container.innerHTML = ''; 
+            
+            if (data.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-10 text-gray-500">
+                        <i class="fa-solid fa-magnifying-glass-minus text-4xl mb-3 opacity-40"></i>
+                        <p>Tidak ada layanan yang ditemukan.</p>
+                    </div>`;
+                return;
+            }
+
+            data.forEach(item => {
+                // Buat label kecil (badge) jika link tersebut berada di dalam sebuah folder
+                let parentBadge = item.Parent && item.Parent.trim() !== '' 
+                    ? `<span class="mt-1 text-[11px] px-2 py-0.5 bg-gray-200 dark:bg-gray-700 rounded text-gray-600 dark:text-gray-300 inline-block w-max"><i class="fa-solid fa-folder-open mr-1"></i>${item.Parent}</span>` 
+                    : '';
+
+                container.innerHTML += `
+                    <a href="${item.Link}" target="_blank" class="flex items-center w-full p-4 mb-2 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-primary group">
+                        <div class="w-10 flex justify-center text-primary text-xl group-hover:scale-110 transition-transform"><i class="${item.Icon || 'fa-solid fa-link'}"></i></div>
+                        <div class="flex-1 text-left flex flex-col justify-center">
+                            <span class="font-bold leading-tight">${item.Judul}</span>
+                            ${parentBadge}
+                        </div>
+                        <div class="w-8 flex justify-center text-gray-300 dark:text-gray-600 group-hover:text-primary transition-colors"><i class="fa-solid fa-arrow-up-right-from-square text-sm"></i></div>
+                    </a>
+                `;
+            });
+        }
+
+        // --- FUNGSI RENDER TAMPILAN NORMAL (DENGAN FOLDER) ---
+        function renderLinks(data) {
+            container.innerHTML = ''; 
+            
             const topLevelItems = data.filter(item => !item.Parent || item.Parent.trim() === '');
             const childItems = data.filter(item => item.Parent && item.Parent.trim() !== '');
 
             topLevelItems.forEach(item => {
                 if (item.Tipe.toLowerCase() === 'folder') {
-                    // Render Folder (Accordion)
                     const children = childItems.filter(child => child.Parent === item.Judul);
                     const folderId = createSafeId(item.Judul);
                     
@@ -148,7 +207,6 @@
                         </div>
                     `;
                 } else {
-                    // Render Standard Link
                     container.innerHTML += `
                         <a href="${item.Link}" target="_blank" class="flex items-center w-full p-4 mb-1 bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-md transition-all border border-transparent hover:border-primary group">
                             <div class="w-10 flex justify-center text-primary text-xl group-hover:scale-110 transition-transform"><i class="${item.Icon || 'fa-solid fa-link'}"></i></div>
@@ -166,19 +224,14 @@
             const icon = document.getElementById(`icon-${id}`);
             
             if (content.style.maxHeight) {
-                // Menutup
                 content.style.maxHeight = null;
                 icon.style.transform = 'rotate(0deg)';
             } else {
-                // Membuka (set max-height yang cukup besar agar tertampung)
                 content.style.maxHeight = content.scrollHeight + "px";
                 icon.style.transform = 'rotate(180deg)';
-                
-                // Opsional: Jika ingin folder lain tertutup saat satu terbuka, bisa loop seluruh accordion di sini.
             }
         }
 
-        // Load data saat halaman siap
         document.addEventListener('DOMContentLoaded', fetchLinks);
     </script>
 </body>
