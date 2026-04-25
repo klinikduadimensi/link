@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - Halaman Tidak Ditemukan</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+/* Menggunakan font yang lebih modern */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+/* TEMA TERANG DENGAN AKSEN BIRU #0e58a6 */
+body {
+    background-color: #F8FAFC; 
+    color: #1F2937; 
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    margin: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; 
+}
+
+::selection {
+    background-color: rgba(14, 88, 166, 0.2); /* Biru transparan */
+}
+
+::-moz-selection {
+    background-color: rgba(14, 88, 166, 0.2);
+}
+
+/* Penataan link umum */
+a {
+    color: #0e58a6; /* Warna biru utama */
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+a:hover {
+    color: #0a4280; /* Warna biru lebih gelap saat hover */
+}
+
+/* === WRAP === */
+#wrap {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 0;
+}
+
+/* === MAIN TEXT CONTENT === */
+#main-content {
+    float: right;
+    max-width: 50%;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #4B5563; 
+}
+
+#main-content h1 {
+    margin: 0px;
+    font-weight: 700;
+    font-size: 48px;
+    margin-bottom: 25px;
+    line-height: 1.2;
+    color: #111827; 
+}
+
+/* === SEARCH FORM === */
+#search { margin-top: 35px; margin-bottom: 20px; position: relative; }
+
+#search input[type='text'] {
+    width: 100%;
+    height: 50px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    border: 2px solid #E5E7EB; 
+    outline: none;
+    font-size: 16px;
+    font-weight: 400;
+    color: #1F2937;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s ease;
+    border-radius: 8px; 
+}
+
+#search input[type='text']:focus {
+    border-color: #0e58a6; /* Border berubah menjadi biru saat fokus */
+}
+
+#search .input-search {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    height: 40px;
+    padding: 0 20px;
+    background-color: #0e58a6; /* Tombol warna biru utama */
+    outline: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+    border-radius: 6px;
+}
+
+#search .input-search:hover {
+    background-color: #0a4280; /* Tombol biru gelap saat hover */
+}
+
+/* === NAVIGATION BUTTONS === */
+#navigation { margin-top: 25px; display: flex; flex-wrap: wrap; gap: 10px; }
+
+#navigation a.navigation {
+    display: inline-block;
+    background-color: #FFFFFF;
+    border: 2px solid #E5E7EB;
+    padding: 10px 20px;
+    color: #374151;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+#navigation a.navigation:hover {
+    background-color: #F3F4F6;
+    border-color: #D1D5DB;
+    color: #0e58a6; /* Teks menjadi biru saat tombol navigasi di-hover */
+}
+
+/* === WORDSEARCH === */
+#wordsearch {
+    width: 45%;
+    float: left;
+}
+
+#wordsearch ul {
+    margin: 0px;
+    padding: 0px;
+    display: grid; 
+    grid-template-columns: repeat(8, 1fr); 
+    gap: 5px;
+}
+
+#wordsearch ul li {
+    background-color: #E5E7EB; 
+    list-style: none;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9CA3AF; 
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 600;
+    transition: all 0.5s ease;
+    border-radius: 6px;
+}
+
+/* Animasi: Warna saat huruf terpilih */
+#wordsearch ul li.selected {
+    background-color: #0e58a6; /* Latar kotak terpilih biru */
+    color: #FFFFFF; 
+    box-shadow: 0 4px 10px rgba(14, 88, 166, 0.3); /* Efek bayangan biru */
+}
+
+/* === RESPONSIVE CSS === */
+@media all and (max-width: 899px) {
+    #wrap { width: 95%; }
+    #main-content h1 { font-size: 36px; }
+}
+
+@media all and (max-width: 799px) {
+    #wordsearch { width: 80%; float: none; margin: 0 auto 40px auto; }
+    #wordsearch ul li { font-size: 4vw; }
+    #main-content { float: none; width: 100%; max-width: 100%; text-align: center; }
+    #main-content h1 { text-align: center; }
+    #search input[type='text'] { padding-right: 80px; }
+    #navigation { justify-content: center; }
+}
+
+@media all and (max-width: 499px) {
+    #main-content h1 { font-size: 28px; }
+    #wordsearch ul { gap: 3px; }
+}
+    </style>
+</head>
+<body>
+  <div id="wrap">
+    <div id="wordsearch">
+      <ul>
+        <li>k</li> <li>v</li> <li>n</li> <li>z</li> <li>i</li> <li>x</li> <li>m</li> <li>e</li>
+        <li>t</li> <li>a</li> <li>x</li> <li>l</li> <li class="one">4</li> <li class="two">0</li> <li class="three">4</li> <li>y</li>
+        <li>y</li> <li>w</li> <li>v</li> <li>b</li> <li>o</li> <li>q</li> <li>d</li> <li>y</li>
+        <li>p</li> <li>a</li> <li class="four">p</li> <li class="five">a</li> <li class="six">g</li> <li class="seven">e</li> <li>v</li> <li>j</li>
+        <li>a</li> <li class="eight">n</li> <li class="nine">o</li> <li class="ten">t</li> <li>s</li> <li>c</li> <li>e</li> <li>w</li>
+        <li>v</li> <li>x</li> <li>e</li> <li>p</li> <li>c</li> <li>f</li> <li>h</li> <li>q</li>
+        <li>e</li> <li class="eleven">f</li> <li class="twelve">o</li> <li class="thirteen">u</li> <li class="fourteen">n</li> <li class="fifteen">d</li> <li>s</li> <li>w</li>
+        <li>q</li> <li>v</li> <li>o</li> <li>s</li> <li>m</li> <li>v</li> <li>f</li> <li>u</li>
+      </ul>
+    </div>
+
+    <div id="main-content">
+      <h1>Maaf, halaman tidak ditemukan.</h1>
+
+      <p>Sepertinya halaman yang Anda cari tidak dapat ditemukan. Mungkin halaman tersebut telah dipindahkan, dihapus, atau sedang tidak tersedia untuk sementara waktu.</p>
+
+      <p>Coba periksa kembali URL yang Anda masukkan atau gunakan pencarian di bawah ini untuk menemukan apa yang Anda butuhkan.</p>
+
+      <div id="search">
+        <form>
+          <input type="text" placeholder="Cari di situs kami..." />
+          <button type="button" class="input-search">Cari</button>
+        </form>
+      </div>
+
+      <div id="navigation">
+        <a class="navigation" href="https://duadimensi.co.id/">Beranda</a>
+        <a class="navigation" href="https://duadimensi.co.id/tentang">Tentang Kami</a>
+        <a class="navigation" href="https://duadimensi.co.id/cabang">Peta Situs</a>
+        <a class="navigation" href="https://api.whatsapp.com/send?phone=6281127012229&text=Saya%20mau%20bertanya">Kontak</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Mengatur aspek rasio kotak huruf agar selalu persegi */
+    function adjustWordsearchHeight() {
+        var liWidth = $("#wordsearch ul li").width();
+        $("#wordsearch ul li").css("height", liWidth);
+    }
+
+    $(window).on('load resize', function () {
+        adjustWordsearchHeight();
+    });
+
+    /* Animasi JQuery untuk menyorot kata kunci */
+    $(function () {
+        const classes = [".one", ".two", ".three", ".four", ".five", ".six", ".seven", ".eight", ".nine", ".ten", ".eleven", ".twelve", ".thirteen", ".fourteen", ".fifteen"];
+        let delay = 1000; // Penundaan awal (1 detik)
+
+        classes.forEach(function(className, index) {
+            // Tambahkan waktu delay untuk setiap huruf agar muncul bergantian
+            setTimeout(function() {
+                $(className).addClass("selected");
+            }, delay + (index * 250)); // Muncul setiap 0.25 detik
+        });
+    });
+  </script>
+
+</body>
+</html>
