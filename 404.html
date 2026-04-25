@@ -19,17 +19,16 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh; /* Memastikan footer selalu di bawah */
-            background-color: #f8f9fa;
+            background-color: #e9e9e9; /* Warna latar belakang dari halaman asli */
             color: #333;
         }
 
         a {
             text-decoration: none;
-            color: inherit;
             transition: color 0.3s ease;
         }
 
-        /* === HALAMAN UTAMA 404 === */
+        /* === HALAMAN UTAMA 404 (DIUBAH UNTUK REPLIKASI ASLI) === */
         .error-container {
             flex: 1; /* Mengisi sisa ruang kosong di atas footer */
             display: flex;
@@ -42,23 +41,78 @@
 
         .error-container h1 {
             font-size: 6rem;
-            color: #2c3e50;
+            color: #222;
             margin-bottom: 10px;
         }
 
-        .error-container h2 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #555;
-        }
-
         .error-container p {
-            margin-bottom: 30px;
-            color: #666;
-            max-width: 500px;
+            margin-bottom: 20px;
+            color: #444;
+            max-width: 600px;
         }
 
+        .instruction-text {
+            font-size: 14px;
+            color: #777;
+            margin-top: 15px;
+        }
+
+        .instruction-text a {
+            color: #4da6ff;
+            text-decoration: underline;
+        }
+
+        .animated-icon-wrapper {
+            margin-top: 30px;
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .animated-icon {
+            width: 100%;
+            height: 100%;
+            background-color: #333; /* Placeholder karakter */
+            border-radius: 50%;
+            animation: float 2s infinite ease-in-out;
+        }
+
+        /* Teks di bawah animasi dari halaman asli */
+        .additional-text {
+            font-size: 14px;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Tautan di bagian paling bawah halaman asli (di atas footer Dua Dimensi) */
+        .footer-links {
+            font-size: 12px;
+            color: #777;
+            margin-top: 30px;
+        }
+
+        .footer-links a {
+            color: #777;
+            text-decoration: underline;
+        }
+
+        /* Menampilkan logo kecil di halaman asli */
+        .github-logo {
+            margin-top: 20px;
+            width: 32px;
+            height: 32px;
+            background-color: #777; /* Placeholder logo */
+            border-radius: 5px;
+        }
+
+        /* Tombol Beranda dari versi sebelumnya (jika Anda masih ingin, atau bisa dihapus) */
         .btn-home {
+            margin-top: 20px;
             padding: 12px 24px;
             background-color: #0056b3;
             color: #fff;
@@ -71,11 +125,12 @@
             color: #fff;
         }
 
-        /* === FOOTER DUA DIMENSI === */
+        /* === FOOTER DUA DIMENSI === (Persis seperti sebelumnya) */
         .dd-footer {
             background-color: #1a1a1a; /* Background gelap sesuai setting teks putih bawaan */
             color: #ffffff;
             padding: 60px 20px 20px 20px;
+            margin-top: auto; /* Memastikan footer selalu di bawah */
         }
 
         .footer-content {
@@ -145,6 +200,7 @@
             background: #333;
             padding: 5px 12px;
             border-radius: 4px;
+            color: #cccccc;
         }
 
         .social-links a:hover {
@@ -158,9 +214,23 @@
 
     <main class="error-container">
         <h1>404</h1>
-        <h2>Halaman Tidak Ditemukan</h2>
-        <p>Maaf, halaman yang Anda cari sepertinya salah. Jangan khawatir, Anda masih bisa kembali ke halaman utama kami.</p>
-        <a href="https://klinikduadimensi.github.io/link/" class="btn-home">Kembali ke Beranda</a>
+        <p>There isn't a GitHub Pages site here.</p>
+        <p class="instruction-text">If you're trying to publish one, <a href="https://docs.github.com/pages" target="_blank">read the full documentation</a> to learn how to set up <a href="https://docs.github.com/pages" target="_blank">GitHub Pages</a> for your repository, organization, or user account.</p>
+
+        <div class="animated-icon-wrapper">
+            <div class="animated-icon">
+                </div>
+        </div>
+        <p class="additional-text">GitHub Pages for your repository, organization, or user account.</p>
+
+        <div class="footer-links">
+            <a href="https://www.githubstatus.com/" target="_blank">GitHub Status</a> — <a href="https://twitter.com/githubstatus" target="_blank">@githubstatus</a>
+        </div>
+
+        <div class="github-logo">
+            </div>
+
+        <a href="/" class="btn-home">Kembali ke Beranda</a>
     </main>
 
     <footer class="dd-footer">
@@ -218,7 +288,7 @@
         </div>
 
         <div class="footer-bottom">
-            <p>&copy; 2026 Dua Dimensi. All Rights Reserved.</p>
+            <p>© 2026 Dua Dimensi. All Rights Reserved. Site by DD.</p>
         </div>
     </footer>
 
